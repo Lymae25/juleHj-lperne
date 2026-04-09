@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Julehjælperne.dk</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Lato', sans-serif; background: #0d1b2a; color: #f0ece4; min-height: 100vh; }
+
+  .hero {
+    background: linear-gradient(160deg, #0d1b2a 0%, #1a2e1f 60%, #0d1b2a 100%);
+    padding: 60px 24px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(200,60,40,0.12) 0%, transparent 60%);
+  }
+  .snowflakes { font-size: 18px; letter-spacing: 12px; opacity: 0.4; margin-bottom: 24px; }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 6vw, 3.8rem);
+    font-weight: 700;
+    color: #f5e6c8;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .hero h1 span { color: #c83c28; }
+  .tagline {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: #a8bfa8;
+    font-weight: 300;
+    margin-bottom: 40px;
+    letter-spacing: 0.5px;
+  }
+  .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: #c83c28; color: #fff;
+    border: none; border-radius: 6px;
+    padding: 14px 28px; font-size: 1rem;
+    font-family: 'Lato', sans-serif; font-weight: 700;
+    cursor: pointer; letter-spacing: 0.3px;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: #a82e1e; transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent; color: #f5e6c8;
+    border: 1.5px solid rgba(245,230,200,0.4);
+    border-radius: 6px; padding: 13px 28px;
+    font-size: 1rem; font-family: 'Lato', sans-serif; font-weight: 400;
+    cursor: pointer; transition: border-color 0.2s, transform 0.15s;
+  }
+  .btn-secondary:hover { border-color: #f5e6c8; transform: translateY(-1px); }
+
+  .mission {
+    background: #f5f0e8; color: #1a1a18;
+    padding: 64px 24px; text-align: center;
+  }
+  .mission h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    margin-bottom: 16px; color: #1a1a18;
+  }
+  .mission p { max-width: 600px; margin: 0 auto; color: #555; line-height: 1.8; font-size: 1.05rem; }
+  .stats { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 48px; }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2.4rem; color: #c83c28; font-weight: 700; }
+  .stat-label { font-size: 0.85rem; color: #777; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
+
+  .donate-section {
+    background: #1a2e1f; padding: 72px 24px; text-align: center;
+  }
+  .donate-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    color: #f5e6c8; margin-bottom: 12px;
+  }
+  .donate-section p { color: #8aaa8a; max-width: 480px; margin: 0 auto 40px; line-height: 1.7; }
+  .mobilepay-box {
+    background: #fff; border-radius: 16px;
+    display: inline-block; padding: 32px 40px;
+    text-align: center; max-width: 320px; width: 100%;
+  }
+  .mp-logo { margin-bottom: 16px; }
+  .mp-logo svg { width: 140px; height: auto; }
+  .mp-box-number {
+    background: #5a1ca6; color: #fff;
+    border-radius: 8px; padding: 12px 24px;
+    font-size: 1.5rem; font-weight: 700;
+    letter-spacing: 2px; margin-bottom: 8px;
+    display: inline-block;
+  }
+  .mp-hint { font-size: 0.8rem; color: #777; margin-bottom: 20px; }
+  .mp-amounts { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+  .mp-amount-btn {
+    background: #f0f0f0; border: 1.5px solid #e0e0e0;
+    border-radius: 20px; padding: 6px 16px;
+    font-size: 0.9rem; cursor: pointer; color: #333;
+    font-family: 'Lato', sans-serif; font-weight: 700;
+    transition: all 0.15s;
+  }
+  .mp-amount-btn:hover, .mp-amount-btn.active {
+    background: #5a1ca6; color: #fff; border-color: #5a1ca6;
+  }
+  .mp-cta {
+    background: #5a1ca6; color: #fff;
+    border: none; border-radius: 8px;
+    padding: 12px 32px; font-size: 1rem;
+    font-family: 'Lato', sans-serif; font-weight: 700;
+    cursor: pointer; width: 100%; transition: background 0.2s;
+  }
+  .mp-cta:hover { background: #451596; }
+
+  .newsletter { background: #f5f0e8; padding: 64px 24px; text-align: center; }
+  .newsletter h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    color: #1a1a18; margin-bottom: 10px;
+  }
+  .newsletter p { color: #666; margin-bottom: 28px; max-width: 440px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+  .nl-form { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; max-width: 480px; margin: 0 auto; }
+  .nl-form input {
+    flex: 1; min-width: 200px;
+    padding: 13px 16px; border-radius: 6px;
+    border: 1.5px solid #ddd; font-size: 1rem;
+    font-family: 'Lato', sans-serif; background: #fff; color: #1a1a18;
+    outline: none; transition: border-color 0.2s;
+  }
+  .nl-form input:focus { border-color: #c83c28; }
+  .nl-form button {
+    background: #c83c28; color: #fff;
+    border: none; border-radius: 6px;
+    padding: 13px 24px; font-size: 1rem;
+    font-family: 'Lato', sans-serif; font-weight: 700;
+    cursor: pointer; white-space: nowrap; transition: background 0.2s;
+  }
+  .nl-form button:hover { background: #a82e1e; }
+  .nl-success { display: none; color: #2a6e2a; font-weight: 700; font-size: 1.05rem; padding: 12px; }
+
+  footer {
+    background: #0d1b2a; padding: 32px 24px; text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.07);
+  }
+  footer p { font-size: 0.85rem; color: #556; }
+  footer a { color: #8aaa8a; text-decoration: none; }
+
+  @media (max-width: 500px) {
+    .stats { gap: 24px; }
+    .mobilepay-box { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="snowflakes">❄ ❄ ❄ ❄ ❄</div>
+  <h1>Julehjælp<span>erne</span>.dk</h1>
+  <p class="tagline">Julen er for alle — hjælp os gøre den magisk</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="document.querySelector('.donate-section').scrollIntoView({behavior:'smooth'})">Donér via MobilePay</button>
+    <button class="btn-secondary" onclick="document.querySelector('.newsletter').scrollIntoView({behavior:'smooth'})">Tilmeld nyhedsbrev</button>
+  </div>
+</section>
+
+<section class="mission">
+  <h2>Hvem er vi?</h2>
+  <p>Julehjælperne er en frivillig organisation, der hvert år sørger for, at børn og familier i udsatte positioner oplever en rigtig julefejring — med gaver, mad og fællesskab.</p>
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">847</div>
+      <div class="stat-label">Familier hjulpet</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2.300+</div>
+      <div class="stat-label">Gaver uddelt</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">12</div>
+      <div class="stat-label">Kommuner</div>
+    </div>
+  </div>
+</section>
+
+<section class="donate-section">
+  <h2>Giv en julegave</h2>
+  <p>Alle beløb gør en forskel. Din donation går direkte til indkøb af gaver og julmad til familier i nød.</p>
+  <div class="mobilepay-box">
+    <div class="mp-logo">
+      <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="0" width="200" height="60" rx="6" fill="#5a1ca6"/>
+        <circle cx="30" cy="30" r="16" fill="#fff" opacity="0.15"/>
+        <circle cx="30" cy="30" r="10" fill="#fff"/>
+        <text x="54" y="38" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#fff">MobilePay</text>
+      </svg>
+    </div>
+    <div class="mp-box-number">12345</div>
+    <div class="mp-hint">MobilePay Box — "Julehjælperne"</div>
+    <div class="mp-amounts">
+      <button class="mp-amount-btn" onclick="selectAmount(this, '50 kr')">50 kr</button>
+      <button class="mp-amount-btn" onclick="selectAmount(this, '100 kr')">100 kr</button>
+      <button class="mp-amount-btn active" onclick="selectAmount(this, '200 kr')">200 kr</button>
+      <button class="mp-amount-btn" onclick="selectAmount(this, '500 kr')">500 kr</button>
+    </div>
+    <button class="mp-cta" onclick="openMobilePay()">Åbn MobilePay ↗</button>
+  </div>
+</section>
+
+<section class="newsletter">
+  <h2>Hold dig opdateret</h2>
+  <p>Tilmeld vores nyhedsbrev og hør om vores arbejde, arrangementer og hvordan du kan hjælpe mere.</p>
+  <div class="nl-form" id="nlForm">
+    <input type="email" id="emailInput" placeholder="din@email.dk" />
+    <button onclick="signupNewsletter()">Tilmeld</button>
+  </div>
+  <div class="nl-success" id="nlSuccess">✓ Tak! Du er nu tilmeldt vores nyhedsbrev 🎄</div>
+</section>
+
+<footer>
+  <p>© 2024 Julehjælperne.dk · <a href="#">Privatlivspolitik</a> · <a href="#">Kontakt</a></p>
+  <p style="margin-top:6px; color:#445;">CVR: XXXXXXXX · Konto: XXXX-XXXXXXXXXX</p>
+</footer>
+
+<script>
+  let selectedAmount = '200 kr';
+
+  function selectAmount(btn, amount) {
+    document.querySelectorAll('.mp-amount-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedAmount = amount;
+  }
+
+  function openMobilePay() {
+    alert('Åbn MobilePay og søg på Box-nummer: 12345\nEller søg på "Julehjælperne"\nBeløb: ' + selectedAmount);
+  }
+
+  function signupNewsletter() {
+    const email = document.getElementById('emailInput').value;
+    if (!email || !email.includes('@')) {
+      alert('Indtast venligst en gyldig e-mailadresse.');
+      return;
+    }
+    document.getElementById('nlForm').style.display = 'none';
+    document.getElementById('nlSuccess').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>
