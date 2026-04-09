@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvem er vi – Julehjælperne.dk</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Lato',sans-serif; background:#0d1b2a; color:#f0ece4; min-height:100vh; overflow-x:hidden; }
+
+  /* NAV */
+  nav { position:fixed; top:0; left:0; right:0; z-index:1000; background:rgba(13,27,42,0.95); backdrop-filter:blur(10px); border-bottom:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:space-between; padding:14px 24px; }
+  .nav-logo { font-family:'Playfair Display',serif; font-size:1.2rem; color:#f5e6c8; text-decoration:none; display:flex; align-items:center; gap:10px; }
+  .nav-logo img { width:36px; height:36px; border-radius:50%; object-fit:cover; }
+  .hamburger { background:none; border:none; cursor:pointer; display:flex; flex-direction:column; gap:5px; padding:4px; }
+  .hamburger span { display:block; width:26px; height:2px; background:#f5e6c8; border-radius:2px; transition:all .3s; }
+  .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .hamburger.open span:nth-child(2){opacity:0;}
+  .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  .menu-overlay { position:fixed; inset:0; z-index:999; background:rgba(13,27,42,0.97); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; opacity:0; pointer-events:none; transition:opacity .3s; }
+  .menu-overlay.open { opacity:1; pointer-events:all; }
+  .menu-overlay a { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,6vw,3rem); color:#f5e6c8; text-decoration:none; padding:12px 32px; border-radius:8px; transition:color .2s; text-align:center; }
+  .menu-overlay a:hover,.menu-overlay a.active-page { color:#e04030; }
+  .menu-divider { width:60px; height:1px; background:rgba(255,255,255,.15); margin:8px 0; }
+
+  /* SNOWFALL */
+  .snowfall { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:998; overflow:hidden; }
+  .snowflake { position:absolute; top:-20px; color:#fff; opacity:0; animation:fall linear infinite; }
+  @keyframes fall { 0%{opacity:.7;transform:translateY(0) rotate(0deg);} 100%{opacity:0;transform:translateY(100vh) rotate(360deg);} }
+
+  /* PAGE HEADER */
+  .page-header {
+    background:linear-gradient(160deg,#0d1b2a 0%,#12233a 60%,#0d1b2a 100%);
+    padding:130px 24px 70px; text-align:center; position:relative;
+  }
+  .page-header::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 40%,rgba(200,60,40,.12) 0%,transparent 65%); }
+  .page-header h1 { font-family:'Playfair Display',serif; font-size:clamp(2rem,5vw,3.2rem); color:#f5e6c8; margin-bottom:14px; position:relative; }
+  .page-header h1 span { color:#e04030; }
+  .page-header p { color:#8faabf; font-size:1.1rem; font-weight:300; position:relative; max-width:520px; margin:0 auto; line-height:1.7; }
+
+  /* SECTIONS */
+  .content { max-width:780px; margin:0 auto; padding:64px 24px; }
+
+  /* INTRO */
+  .intro-block {
+    display:grid; grid-template-columns:1fr 1fr; gap:40px;
+    align-items:center; margin-bottom:72px;
+  }
+  .intro-block .text h2 { font-family:'Playfair Display',serif; font-size:clamp(1.5rem,4vw,2rem); color:#f5e6c8; margin-bottom:16px; }
+  .intro-block .text p { color:#8faabf; line-height:1.85; font-size:1rem; margin-bottom:14px; }
+  .intro-visual {
+    background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.09);
+    border-radius:20px; padding:32px 24px; text-align:center;
+  }
+  .intro-visual img { width:120px; height:120px; border-radius:50%; object-fit:cover; margin-bottom:16px; border:3px solid rgba(255,255,255,.15); animation:floatLogo 4s ease-in-out infinite; }
+  @keyframes floatLogo { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+  .intro-visual blockquote { font-family:'Playfair Display',serif; font-size:1.1rem; color:#f5e6c8; font-style:italic; line-height:1.6; }
+  .intro-visual cite { display:block; margin-top:10px; font-size:.82rem; color:#6a8aa0; font-style:normal; }
+
+  /* STATS BANNER */
+  .stats-banner {
+    background:linear-gradient(135deg,rgba(200,60,40,.15),rgba(90,28,166,.15));
+    border:1px solid rgba(255,255,255,.08); border-radius:16px;
+    padding:40px 32px; margin-bottom:72px;
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:24px; text-align:center;
+  }
+  .stat-item .num { font-family:'Playfair Display',serif; font-size:2.4rem; color:#e04030; font-weight:700; }
+  .stat-item .label { font-size:.8rem; color:#7a9ab0; margin-top:6px; text-transform:uppercase; letter-spacing:1.2px; }
+
+  /* SECTION TITLE */
+  .section-title { font-family:'Playfair Display',serif; font-size:clamp(1.4rem,3.5vw,1.9rem); color:#f5e6c8; margin-bottom:24px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,.08); }
+
+  /* HVAD VI GØR */
+  .what-we-do { margin-bottom:72px; }
+  .steps { display:flex; flex-direction:column; gap:0; }
+  .step { display:flex; gap:24px; align-items:flex-start; padding:28px 0; border-bottom:1px solid rgba(255,255,255,.05); }
+  .step:last-child { border-bottom:none; }
+  .step-num { min-width:48px; height:48px; border-radius:50%; background:rgba(200,60,40,.2); border:1.5px solid rgba(200,60,40,.4); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:1.2rem; color:#e04030; font-weight:700; flex-shrink:0; }
+  .step-body h3 { font-family:'Playfair Display',serif; font-size:1.15rem; color:#f5e6c8; margin-bottom:8px; }
+  .step-body p { color:#7a9ab0; line-height:1.75; font-size:.95rem; }
+
+  /* TIMELINE */
+  .timeline-section { margin-bottom:72px; }
+  .timeline { position:relative; padding-left:32px; }
+  .timeline::before { content:''; position:absolute; left:7px; top:8px; bottom:8px; width:2px; background:rgba(255,255,255,.1); border-radius:2px; }
+  .timeline-item { position:relative; margin-bottom:32px; }
+  .timeline-item::before { content:''; position:absolute; left:-28px; top:6px; width:12px; height:12px; border-radius:50%; background:#e04030; border:2px solid rgba(200,60,40,.3); }
+  .timeline-item .year { font-size:.8rem; color:#e04030; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:4px; }
+  .timeline-item h3 { font-family:'Playfair Display',serif; font-size:1.05rem; color:#f5e6c8; margin-bottom:6px; }
+  .timeline-item p { color:#7a9ab0; font-size:.9rem; line-height:1.7; }
+
+  /* TEAM */
+  .team-section { margin-bottom:72px; }
+  .team-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; }
+  .team-card { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:28px 20px; text-align:center; transition:border-color .2s; }
+  .team-card:hover { border-color:rgba(200,60,40,.4); }
+  .team-avatar { width:72px; height:72px; border-radius:50%; margin:0 auto 14px; display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:1.5rem; color:#f5e6c8; font-weight:700; }
+  .av-red { background:rgba(200,60,40,.25); border:2px solid rgba(200,60,40,.3); }
+  .av-purple { background:rgba(90,28,166,.3); border:2px solid rgba(90,28,166,.35); }
+  .av-teal { background:rgba(15,110,86,.3); border:2px solid rgba(15,110,86,.35); }
+  .av-blue { background:rgba(24,95,165,.3); border:2px solid rgba(24,95,165,.35); }
+  .team-card h3 { font-family:'Playfair Display',serif; font-size:1rem; color:#f5e6c8; margin-bottom:4px; }
+  .team-card p { font-size:.82rem; color:#6a8aa0; }
+
+  /* CTA */
+  .cta-block { background:rgba(200,60,40,.12); border:1px solid rgba(200,60,40,.25); border-radius:16px; padding:40px 32px; text-align:center; }
+  .cta-block h2 { font-family:'Playfair Display',serif; font-size:1.7rem; color:#f5e6c8; margin-bottom:12px; }
+  .cta-block p { color:#8faabf; line-height:1.7; margin-bottom:28px; max-width:440px; margin-left:auto; margin-right:auto; }
+  .cta-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .btn-primary { background:#c83c28; color:#fff; border:none; border-radius:6px; padding:13px 28px; font-size:1rem; font-family:'Lato',sans-serif; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:background .2s,transform .15s; }
+  .btn-primary:hover { background:#a82e1e; transform:translateY(-2px); }
+  .btn-secondary { background:transparent; color:#f5e6c8; border:1.5px solid rgba(245,230,200,.35); border-radius:6px; padding:12px 28px; font-size:1rem; font-family:'Lato',sans-serif; cursor:pointer; text-decoration:none; display:inline-block; transition:all .2s; }
+  .btn-secondary:hover { border-color:#f5e6c8; transform:translateY(-2px); }
+
+  /* FOOTER */
+  footer { background:#060f18; padding:32px 24px; text-align:center; border-top:1px solid rgba(255,255,255,.05); }
+  footer p { font-size:.82rem; color:#445; line-height:2; }
+  footer a { color:#6a8aa0; text-decoration:none; }
+
+  @media(max-width:600px){
+    .intro-block { grid-template-columns:1fr; }
+    .cta-block { padding:28px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="snowfall" id="snowfall"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="julemand.jpeg" alt="logo">
+    Julehjælperne
+  </a>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="menu-overlay" id="menuOverlay">
+  <a href="index.html" onclick="closeMenu()">🏠 Forside</a>
+  <div class="menu-divider"></div>
+  <a href="om-os.html" class="active-page" onclick="closeMenu()">⭐ Hvem er vi</a>
+  <div class="menu-divider"></div>
+  <a href="doneer.html" onclick="closeMenu()">🎁 Donér</a>
+  <div class="menu-divider"></div>
+  <a href="tilmeld.html" onclick="closeMenu()">✉️ Tilmeld nyhedsbrev</a>
+</div>
+
+<section class="page-header">
+  <h1>Hvem er <span>Julehjælperne?</span></h1>
+  <p>En flok frivillige der tror på, at julen skal fejres af alle — uanset hvad livet ellers byder på</p>
+</section>
+
+<div class="content">
+
+  <!-- INTRO -->
+  <div class="intro-block">
+    <div class="text">
+      <h2>Vores historie</h2>
+      <p>Julehjælperne startede i 2018 med en simpel idé: ingen børn skal vågne op til en tom julemorgen. Det, der begyndte som et lille lokalt initiativ med en håndfuld frivillige og 30 familier, er vokset til en organisation der hvert år når ud til hundredvis af familier i hele landet.</p>
+      <p>Vi er drevet af frivillige med hjertet på rette sted — ingen lønninger, ingen store kontorer. Hver eneste krone går direkte til det vi er her for: at skabe julens magi for dem, der har brug for det mest.</p>
+    </div>
+    <div class="intro-visual">
+      <img src="julemand.jpeg" alt="Julehjælperne" />
+      <blockquote>"Julen handler ikke om hvad du har — men om hvem du er sammen med."</blockquote>
+      <cite>— Grundlæggerne af Julehjælperne</cite>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-banner">
+    <div class="stat-item"><div class="num">2018</div><div class="label">Grundlagt</div></div>
+    <div class="stat-item"><div class="num">847</div><div class="label">Familier hjulpet</div></div>
+    <div class="stat-item"><div class="num">2.300+</div><div class="label">Gaver uddelt</div></div>
+    <div class="stat-item"><div class="num">12</div><div class="label">Kommuner</div></div>
+    <div class="stat-item"><div class="num">150+</div><div class="label">Frivillige</div></div>
+  </div>
+
+  <!-- HVAD VI GØR -->
+  <div class="what-we-do">
+    <h2 class="section-title">Hvad vi gør</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Vi finder familierne</h3>
+          <p>Vi samarbejder med kommuner, skoler og boligsociale indsatser for at identificere familier der har brug for hjælp. Alle henvendelser behandles fortroligt og med respekt.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Vi indsamler donationer</h3>
+          <p>Via MobilePay, bankoverførsler og lokale indsamlingsdåser sørger vi for at samle midler ind i løbet af efteråret. Hvert eneste bidrag øremærkes direkte til gaver og julemad.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Vi køber og pakker</h3>
+          <p>Vores frivillige mødes i pakkecentre rundt om i landet, køber alderspassende gaver og pakker dem smukt ind — klar til at blive sat under juletræet.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>Vi leverer julen</h3>
+          <p>I ugerne op til jul kører vores frivillige ud og afleverer gaver og julepose med mad direkte til familierne — ofte med et smil og en snak over en kop kakao.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline-section">
+    <h2 class="section-title">Hvad vi har opnået</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="year">2018 — Starten</div>
+        <h3>De første 30 familier</h3>
+        <p>Tre venner startede Julehjælperne i en lejlighed i København med en Facebook-opslag og 30 familier fra lokale boligsociale tilbud. Alt blev håndpakket på køkkenbordet.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="year">2019 — Vækst</div>
+        <h3>Ud over Østerbro</h3>
+        <p>Initiativet spredte sig til fire nye byer. Over 120 familier fik julehjælp, og vi fik vores første rigtige pakkelager takket være en lokal virksomhed der sponsorerede lokalet.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="year">2021 — Trods corona</div>
+        <h3>Kontaktfri julelevering</h3>
+        <p>Under coronapandemien omlagde vi hele leveringsprocessen til kontaktfri aflevering. Vi nåede alligevel 400+ familier — og fik stor opmærksomhed i lokale medier.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="year">2023 — Milepæl</div>
+        <h3>Over 800 familier på ét år</h3>
+        <p>For første gang nåede vi over 800 familier i én julesæson fordelt på 12 kommuner. Vi lancerede samtidig vores MobilePay Box som gør det nemmere at donere.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="year">2025 — Nu</div>
+        <h3>Større end nogensinde</h3>
+        <p>Med over 150 frivillige og samarbejde med kommuner, virksomheder og skoler er vi klar til endnu en julsæson. Målet er at nå 1.000 familier for første gang.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM -->
+  <div class="team-section">
+    <h2 class="section-title">Folkene bag</h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar av-red">MJ</div>
+        <h3>Mette Jensen</h3>
+        <p>Grundlægger & koordinator</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar av-purple">KL</div>
+        <h3>Kasper Lund</h3>
+        <p>Frivilligansvarlig</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar av-teal">SB</div>
+        <h3>Sara Bang</h3>
+        <p>Kommunikation & sociale medier</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar av-blue">TN</div>
+        <h3>Thomas Nielsen</h3>
+        <p>Økonomi & donationer</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <h2>Vær med til at gøre en forskel</h2>
+    <p>Enten som donor, frivillig eller bare ved at sprede ordet — enhver indsats tæller når vi arbejder mod en jul for alle.</p>
+    <div class="cta-btns">
+      <a href="doneer.html" class="btn-primary">Donér nu 🎁</a>
+      <a href="tilmeld.html" class="btn-secondary">Tilmeld nyhedsbrev</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2025 Julehjælperne.dk &nbsp;·&nbsp; <a href="#">Privatlivspolitik</a> &nbsp;·&nbsp; <a href="#">Kontakt</a></p>
+  <p>CVR: XXXXXXXX &nbsp;·&nbsp; Konto: XXXX-XXXXXXXXXX</p>
+</footer>
+
+<script>
+  const sc=document.getElementById('snowfall');
+  const sym=['❄','✦','*','·'];
+  for(let i=0;i<60;i++){
+    const el=document.createElement('div');
+    el.className='snowflake';
+    el.textContent=sym[Math.floor(Math.random()*sym.length)];
+    el.style.left=Math.random()*100+'vw';
+    el.style.fontSize=(Math.random()*14+8)+'px';
+    el.style.animationDuration=(Math.random()*8+6)+'s';
+    el.style.animationDelay=(Math.random()*10)+'s';
+    sc.appendChild(el);
+  }
+  function toggleMenu(){ document.getElementById('hamburger').classList.toggle('open'); document.getElementById('menuOverlay').classList.toggle('open'); }
+  function closeMenu(){ document.getElementById('hamburger').classList.remove('open'); document.getElementById('menuOverlay').classList.remove('open'); }
+</script>
+</body>
+</html>
