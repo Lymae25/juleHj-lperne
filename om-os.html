@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvem er vi – Julehjælperne.dk</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Lato',sans-serif; background:#0d1b2a; color:#f0ece4; min-height:100vh; overflow-x:hidden; }
+
+  /* NAV */
+  nav { position:fixed; top:0; left:0; right:0; z-index:1000; background:rgba(13,27,42,0.97); backdrop-filter:blur(12px); border-bottom:1px solid rgba(255,255,255,0.07); display:flex; align-items:center; justify-content:space-between; padding:14px 28px; }
+  .nav-logo { font-family:'Playfair Display',serif; font-size:1.15rem; color:#f5e6c8; text-decoration:none; display:flex; align-items:center; gap:10px; letter-spacing:.3px; }
+  .nav-logo img { width:34px; height:34px; border-radius:50%; object-fit:cover; border:1.5px solid rgba(200,60,40,.4); }
+  .hamburger { background:none; border:none; cursor:pointer; display:flex; flex-direction:column; gap:5px; padding:4px; }
+  .hamburger span { display:block; width:24px; height:2px; background:#f5e6c8; border-radius:2px; transition:all .3s; }
+  .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .hamburger.open span:nth-child(2){opacity:0;}
+  .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+  /* MENU OVERLAY */
+  .menu-overlay { position:fixed; inset:0; z-index:999; background:rgba(10,20,34,0.98); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; opacity:0; pointer-events:none; transition:opacity .35s; }
+  .menu-overlay.open { opacity:1; pointer-events:all; }
+  .menu-overlay a { font-family:'Playfair Display',serif; font-size:clamp(1.9rem,7vw,3.2rem); color:#f5e6c8; text-decoration:none; padding:10px 40px; border-radius:8px; transition:color .2s; letter-spacing:.5px; }
+  .menu-overlay a:hover, .menu-overlay a.active-page { color:#e04030; }
+  .menu-divider { width:50px; height:1px; background:rgba(255,255,255,.1); margin:4px 0; }
+
+  /* SNOWFALL */
+  .snowfall { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:2; overflow:hidden; }
+  .snowflake { position:absolute; top:-20px; color:rgba(255,255,255,.6); opacity:0; animation:fall linear infinite; }
+  @keyframes fall { 0%{opacity:.6;transform:translateY(0) rotate(0deg);} 100%{opacity:0;transform:translateY(100vh) rotate(360deg);} }
+
+  /* PAGE HEADER */
+  .page-header {
+    background:linear-gradient(160deg,#0d1b2a 0%,#122438 55%,#0d1b2a 100%);
+    padding:140px 24px 80px; text-align:center; position:relative; overflow:hidden;
+  }
+  .page-header::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 50%,rgba(200,60,40,.13) 0%,transparent 60%); }
+  .page-header::after { content:''; position:absolute; bottom:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(200,60,40,.3),transparent); }
+  .page-header h1 { font-family:'Playfair Display',serif; font-size:clamp(2.2rem,6vw,3.6rem); color:#f5e6c8; margin-bottom:16px; position:relative; line-height:1.2; }
+  .page-header h1 span { color:#e04030; }
+  .page-header p { color:#7a9ab0; font-size:1.1rem; font-weight:300; position:relative; max-width:500px; margin:0 auto; line-height:1.8; }
+
+  /* MAIN CONTENT */
+  .content { max-width:800px; margin:0 auto; padding:72px 24px 80px; }
+
+  /* INTRO */
+  .intro-block { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; margin-bottom:80px; }
+  .intro-block .text h2 { font-family:'Playfair Display',serif; font-size:clamp(1.5rem,4vw,2rem); color:#f5e6c8; margin-bottom:18px; }
+  .intro-block .text p { color:#7a9ab0; line-height:1.9; font-size:1rem; margin-bottom:14px; }
+  .intro-visual { background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.08); border-radius:20px; padding:36px 28px; text-align:center; }
+  .intro-visual img { width:110px; height:110px; border-radius:50%; object-fit:cover; margin-bottom:20px; border:2.5px solid rgba(200,60,40,.35); animation:floatLogo 5s ease-in-out infinite; }
+  @keyframes floatLogo { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-9px);} }
+  .intro-visual blockquote { font-family:'Playfair Display',serif; font-size:1.05rem; color:#d4c9b5; font-style:italic; line-height:1.7; }
+  .intro-visual cite { display:block; margin-top:12px; font-size:.8rem; color:#5a7a90; font-style:normal; letter-spacing:.5px; }
+
+  /* SECTION TITLE */
+  .section-title { font-family:'Playfair Display',serif; font-size:clamp(1.4rem,3.5vw,1.9rem); color:#f5e6c8; margin-bottom:28px; padding-bottom:14px; border-bottom:1px solid rgba(255,255,255,.07); }
+
+  /* WHAT WE DO */
+  .what-we-do { margin-bottom:80px; }
+  .step { display:flex; gap:24px; align-items:flex-start; padding:28px 0; border-bottom:1px solid rgba(255,255,255,.04); }
+  .step:last-child { border-bottom:none; }
+  .step-num { min-width:46px; height:46px; border-radius:50%; background:rgba(200,60,40,.15); border:1.5px solid rgba(200,60,40,.35); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:1.2rem; color:#e04030; font-weight:700; flex-shrink:0; }
+  .step-body h3 { font-family:'Playfair Display',serif; font-size:1.1rem; color:#f5e6c8; margin-bottom:8px; }
+  .step-body p { color:#6a8aa0; line-height:1.8; font-size:.95rem; }
+
+  /* TEAM */
+  .team-section { margin-bottom:80px; }
+  .team-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; }
+  .team-card { background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.07); border-radius:14px; padding:28px 18px; text-align:center; transition:border-color .25s,transform .25s; }
+  .team-card:hover { border-color:rgba(200,60,40,.35); transform:translateY(-3px); }
+  .team-avatar { width:68px; height:68px; border-radius:50%; margin:0 auto 14px; display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:1.4rem; color:#f5e6c8; font-weight:700; }
+  .av-red { background:rgba(200,60,40,.2); border:2px solid rgba(200,60,40,.3); }
+  .av-purple { background:rgba(90,28,166,.25); border:2px solid rgba(90,28,166,.3); }
+  .av-teal { background:rgba(15,110,86,.25); border:2px solid rgba(15,110,86,.3); }
+  .av-blue { background:rgba(24,95,165,.25); border:2px solid rgba(24,95,165,.3); }
+  .team-card h3 { font-family:'Playfair Display',serif; font-size:.97rem; color:#f5e6c8; margin-bottom:5px; }
+  .team-card p { font-size:.8rem; color:#5a7a90; line-height:1.5; }
+
+  /* CTA */
+  .cta-block { background:rgba(200,60,40,.1); border:1px solid rgba(200,60,40,.22); border-radius:16px; padding:44px 36px; text-align:center; }
+  .cta-block h2 { font-family:'Playfair Display',serif; font-size:1.75rem; color:#f5e6c8; margin-bottom:14px; }
+  .cta-block p { color:#7a9ab0; line-height:1.8; margin-bottom:30px; max-width:420px; margin-left:auto; margin-right:auto; }
+  .cta-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .btn-primary { background:#c83c28; color:#fff; border:none; border-radius:6px; padding:13px 30px; font-size:.97rem; font-family:'Lato',sans-serif; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:background .2s,transform .15s; letter-spacing:.3px; }
+  .btn-primary:hover { background:#a82e1e; transform:translateY(-2px); }
+
+  /* FOOTER */
+  footer { background:#060f18; padding:36px 24px; text-align:center; border-top:1px solid rgba(255,255,255,.04); }
+  footer p { font-size:.8rem; color:#3a5060; line-height:2.2; }
+  footer a { color:#5a7a90; text-decoration:none; transition:color .2s; }
+  footer a:hover { color:#f5e6c8; }
+
+  @media(max-width:620px){
+    .intro-block { grid-template-columns:1fr; }
+    .cta-block { padding:30px 20px; }
+    .team-grid { grid-template-columns:1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="snowfall" id="snowfall"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="julemand.jpeg" alt="Julehjælperne logo">
+    Julehjælperne
+  </a>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Åbn menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="menu-overlay" id="menuOverlay">
+  <a href="index.html" onclick="closeMenu()">Forside</a>
+  <div class="menu-divider"></div>
+  <a href="om-os.html" class="active-page" onclick="closeMenu()">Hvem er vi</a>
+  <div class="menu-divider"></div>
+  <a href="doneer.html" onclick="closeMenu()">Donér</a>
+</div>
+
+<section class="page-header">
+  <h1>Hvem er <span>Julehjælperne?</span></h1>
+  <p>En flok frivillige der tror på, at julen skal fejres af alle — uanset hvad livet ellers byder på</p>
+</section>
+
+<div class="content">
+
+  <div class="intro-block">
+    <div class="text">
+      <h2>Vores historie</h2>
+      <p>Julehjælperne startede med en simpel idé: ingen børn skal vågne op til en tom julemorgen. Det, der begyndte som et lille lokalt initiativ med en håndfuld frivillige og 30 familier, er vokset til en organisation der hvert år når ud til hundredvis af familier i hele landet.</p>
+      <p>Vi er drevet af frivillige med hjertet på rette sted. Ingen lønninger, ingen store kontorer. Hver eneste krone går direkte til det vi er her for: at skabe julens magi for dem, der har brug for det mest.</p>
+    </div>
+    <div class="intro-visual">
+      <img src="julemand.jpeg" alt="Julehjælperne" />
+      <blockquote>"Julen handler ikke om hvad du har, men om hvem du er sammen med."</blockquote>
+      <cite>Grundlæggerne af Julehjælperne</cite>
+    </div>
+  </div>
+
+  <div class="what-we-do">
+    <h2 class="section-title">Hvad vi gør</h2>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Vi finder familierne</h3>
+        <p>Vi samarbejder med kommuner, skoler og boligsociale indsatser for at identificere familier der har brug for hjælp. Alle henvendelser behandles fortroligt og med respekt.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Vi indsamler donationer</h3>
+        <p>Via MobilePay og bankoverførsler samler vi midler ind i løbet af efteråret. Hvert eneste bidrag øremærkes direkte til gaver og julemad.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Vi køber og pakker</h3>
+        <p>Vi handler julemaden ind hos lokale købmænd og får gaverne doneret af virksomheder der vil støtte vores sag. Varme pakker og glæde til alle familierne.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>Vi leverer julen</h3>
+        <p>I ugerne op til jul kører vores frivillige ud og afleverer gaver og julepose med mad direkte til familierne, ofte med et smil og en snak over en kop kakao.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="team-section">
+    <h2 class="section-title">Folkene bag</h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar av-red">ML</div>
+        <h3>Mikkel Lautrup</h3>
+        <p>Grundlægger og formand</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar av-purple">JJ</div>
+        <h3>Johnny Jensen</h3>
+        <p>Kasserer</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar av-teal">FP</div>
+        <h3>Flemming Petersen</h3>
+        <p>Sekretær</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar av-blue">FK</div>
+        <h3>Frivillige kræfter</h3>
+        <p>Mange hænder og varme hjerter</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-block">
+    <h2>Vær med til at gøre en forskel</h2>
+    <p>Enten som donor eller ved at sprede ordet. Enhver indsats tæller når vi arbejder mod en jul for alle.</p>
+    <div class="cta-btns">
+      <a href="doneer.html" class="btn-primary">Donér nu 🎁</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2025 Julehjælperne.dk &nbsp;·&nbsp; <a href="#">Privatlivspolitik</a> &nbsp;·&nbsp; <a href="#">Kontakt</a></p>
+  <p>CVR: XXXXXXXX &nbsp;·&nbsp; Konto: XXXX-XXXXXXXXXX</p>
+</footer>
+
+<script>
+  const sc = document.getElementById('snowfall');
+  const sym = ['❄','✦','*','·','❅'];
+  for (let i = 0; i < 55; i++) {
+    const el = document.createElement('div');
+    el.className = 'snowflake';
+    el.textContent = sym[Math.floor(Math.random() * sym.length)];
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.fontSize = (Math.random() * 12 + 8) + 'px';
+    el.style.animationDuration = (Math.random() * 9 + 7) + 's';
+    el.style.animationDelay = (Math.random() * 12) + 's';
+    sc.appendChild(el);
+  }
+  function toggleMenu() {
+    document.getElementById('hamburger').classList.toggle('open');
+    document.getElementById('menuOverlay').classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('menuOverlay').classList.remove('open');
+  }
+</script>
+</body>
+</html>
